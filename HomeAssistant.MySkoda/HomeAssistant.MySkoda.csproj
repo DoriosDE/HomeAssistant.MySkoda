@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        <OutputType>Exe</OutputType>
+
+        <Title>$(MSBuildProjectName)</Title>
+        <Product>$(MSBuildProjectName)</Product>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GitVersion>false</GitVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GitInfo" Version="3.3.5" PrivateAssets="all" />
+        <PackageReference Include="HADotNet.Core" Version="1.6.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="5.3.11" />
+    </ItemGroup>
+
+    <Target Name="PopulateInfo" DependsOnTargets="GitVersion" BeforeTargets="GetAssemblyVersion;GenerateNuspec;GetPackageContents">
+        <PropertyGroup>
+            <Version>$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)</Version>
+            <InformationalVersion>$(Version)$(GitSemVerDashLabel)-$(GitBranch)+$(GitCommit) $(GitCommitDate)</InformationalVersion>
+        </PropertyGroup>
+    </Target>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MySkodaSharp\MySkodaSharp\MySkodaSharp.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="NLog.config">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>
