@@ -1,0 +1,4 @@
+[submodule "MySkodaSharp"]
+	path = MySkodaSharp
+	url = https://github.com/DoriosDE/MySkodaSharp.git
+	branch = master
